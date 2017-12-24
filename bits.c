@@ -173,15 +173,19 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-	int mask1 = 0x55 + (0x55 << 8) + (0x55 << 16) + (0x55 << 24);
-	int count = (x & mask1) +((x >> 1) & mask1); 
-	int mask2 = 0x33 + (0x33 << 8) + (0x33 << 16) + (0x33<< 24);
+	int mask1 = 0x55 | (0x55 << 8);
+	int mask2 = 0x33 | (0x33 << 8);
+	int mask3 = 0xf | (0xf << 8);
+	int mask4 = 0xff | (0xff << 16);
+	int mask5 = 0xff | (0xff << 8);
+	int count;
+	mask1 = mask1 | (mask1 << 16);
+	mask2 = mask2 | (mask2 << 16);
+	mask3 = mask3 | (mask3 << 16);
+	count = (x & mask1) +((x >> 1) & mask1); 
 	count = (count & mask2) + ((count >> 2) &mask2);
-	int mask3 = 0xf + (0xf << 8) + (0xf << 16) + (0xf << 24);
 	count = (count & mask3) + ((count >> 4) & mask3);
-	int mask4 = 0xff + (0xff << 16);
 	count = (count & mask4) + ((count >> 8) & mask4);
-	int mask5 = 0xff + (0xff << 8);
 	count = (count & mask5) + ((count >> 16) & mask5);
 	return count;
 }
