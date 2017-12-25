@@ -278,7 +278,13 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
-  return 2;
+	int tmp;
+	tmp = (!!(x >> 16)) << 4;
+	tmp = tmp + ((!!(x >> (tmp + 8))) << 3);
+	tmp = tmp + ((!!(x >> (tmp + 4))) << 2);
+	tmp = tmp + ((!!(x >> (tmp + 2))) << 1);
+	tmp = tmp + ((!!(x >> (tmp + 1))) << 0); 
+	return tmp;
 }
 /* 
  * float_neg - Return bit-level equivalent of expression -f for
