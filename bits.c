@@ -264,7 +264,11 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+	int signX = !!(x >> 31);
+	int signY = !!(y >> 31);
+	int z = y + ((~x) + 1);
+    int signZ = !!(z >> 31);
+	return ((!(signX ^ signY)) & (!signZ)) | ((signX ^ signY) & (!signY));	
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
