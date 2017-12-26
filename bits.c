@@ -314,7 +314,35 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 2;
+// there is a method in csapp page 82
+	unsigned s = x & (1 << 31);
+	int pos = 30;
+	int frac_mask = (1 << 23) - 1;
+	int frac, exp;
+	int delta;
+	if (!x) {
+		return x;
+	}
+	if (x == 0x80000000) {
+		return 0xcf000000;
+	}
+	if (x < 0) {
+		x = -x;
+	}
+	while (!(x >> pos)) {
+		pos--;
+	}
+	exp = pos + 127;
+	x = x << (31 - pos);
+	frac = (x >> 8) & frac_mask; 
+	x = x & 0xff;
+	delta = (x > 128) || ((x == 128) && (frac & 1));
+	frac += delta;
+	if (frac >> 23) {
+		frac = frac & frac_mask;
+		exp++;
+	}
+	return s | (exp << 23) | frac; 
 }
 /* 
  * float_twice - Return bit-level equivalent of expression 2*f for
