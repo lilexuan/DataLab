@@ -298,7 +298,11 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+	if (!(((uf >> 23) & 0xff) ^ 0xff) && (uf << 9)) {
+		return uf;
+	} else {
+		return uf += (1 << 31);
+	}
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
