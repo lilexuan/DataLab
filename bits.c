@@ -356,5 +356,18 @@ unsigned float_i2f(int x) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
-  return 2;
+	unsigned s = uf & (1 << 31);
+	int exp = (uf >> 23) & 0xff;
+	int frac = uf & 0x7fffff;
+	if (exp !=  0xff) {
+		if (!exp) {
+			frac <<= 1;
+		} else {
+			exp++;
+			if (exp == 0xff) {
+				frac = 0;
+			}
+		}
+	}
+	return s | (exp << 23) | frac;
 }
